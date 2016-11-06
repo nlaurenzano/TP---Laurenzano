@@ -9,26 +9,19 @@ class Estacionamiento
 	}
 
 	public static function Guardar($patente) {
-		
-		$miarchivo = fopen("estacionados.txt", "a");	//http://www.w3schools.com/php/func_filesystem_fopen.asp
-
-
+		$patente = str_ireplace(" ", "", $patente);
 
 		if (Estacionamiento::ValidarPatente($patente)) {
-			if (Estacionamiento::BuscarEstacionado($patente)) {
-				echo "La patente '$patente' pertenece a un vehículo que ya registrado en el estacionamiento.";
+			if (Vehiculo::TraerPorPatente($patente)) {
+				echo "La patente '$patente' pertenece a un vehículo que ya está registrado en el estacionamiento.";
 				return false;
 			} else {
-				$patente = str_ireplace(" ", "", $patente);
-				$patente = strtoupper(chunk_split($patente, 3, " "));
+				//$patente = strtoupper(chunk_split($patente, 3, " "));
 
-				//$fecha = date(DATE_W3C);
-				$fecha = date("Y-m-d H:i:s");
-				$renglon = $patente." - $fecha"."\n";
-
-				fwrite($miarchivo, $renglon);	//Crea el archivo y guarda la patente
-
-				fclose($miarchivo);
+				$unVehiculo = new Vehiculo();
+				$unVehiculo->SetPatente($patente);
+				$unVehiculo->SetEntrada(date("Y-m-d H:i:s"));
+				$unVehiculo->InsertarEstacionado();
 			}
 		} else {
 			echo "La patente '$patente' no es válida. El formato aceptado es 'ABC 123'";
@@ -122,16 +115,7 @@ class Estacionamiento
 		foreach ($estacionados as $auto) {
 			//$renglon = "$patente - $fecha"."\n";
 			$renglon = "$auto[0] - $auto[1]"."\n";
-			/*
-TKT 896 - 2016-09-07 01:32:12
-LMR 798 - 2016-09-07 01:32:26
-AAA 111 - 2016-09-07 01:32:32
-BBB 222 - 2016-09-07 02:16:56
-tkt 896 - 2016-09-12 21:05:11
-ppp 123 - 2016-09-12 21:39:00
-ccccccc - 2016-09-12 22:01:28
-
-			*/
+			
 			fwrite($miarchivo, $renglon);	//Crea el archivo y guarda la patente
 		}
 		fclose($miarchivo);
@@ -185,60 +169,58 @@ ccccccc - 2016-09-12 22:01:28
 
 	public static function ImprimirTablas() {
 
-		$estacionados = Estacionamiento::Leer();
-		$cobrados = Estacionamiento::LeerTickets(10);
+		$estacionados = Vehiculo::TraerTodosLosEstacionados();
+		//$cobrados = Estacionamiento::LeerTickets(10);
 
 		echo '<div style="padding:10px;">';
 		
 		echo '<div style="float:left;margin-right: 30px;">';		// Tabla de estacionados
-		echo MiHTML::Titulo_2("Vehículos estacionados:");
-		echo '<table>';
-		echo MiHTML::Fila(MiHTML::Celda("Patente") . MiHTML::Celda("Entrada"));
-		foreach ($estacionados as $auto) {
-			echo MiHTML::Fila(MiHTML::Celda($auto[0]) . MiHTML::Celda($auto[1]));
+		echo "<h2>Vehículos estacionados:</h2>";
+		echo "<table>
+				<tr>
+					<th>Patente</th>
+					<th>Entrada</th>
+				</tr>";
+
+		foreach ($estacionados as $veh) {
+			echo  "<tr>
+						<td>".$veh->GetPatente()."</td>
+						<td>".$veh->GetEntrada()."</td>
+						<td>
+							<button class=\"btn btn-danger\" name=\"Borrar\" 
+								onclick=\"Borrar('".$veh->GetPatente()."')\">Borrar</button>
+						</td>
+						<td>
+							<button class=\"btn btn-warning\" name=\"Modificar\" 
+								onclick=\"Modificar('".$veh->GetPatente()."')\">Modificar</button>
+						</td>
+					</tr>";
 		}
+
 		echo '</table></div>';						// Tabla de estacionados
 
-		echo '<div>';		// Tabla de tickets
-		echo MiHTML::Titulo_2("Vehículos ya cobrados:");
-		echo '<table>';
-		echo MiHTML::Fila(MiHTML::Celda("Patente<br />Precio") . MiHTML::Celda("Entrada<br />Salida"));
+		// Tabla de tickets
+		echo "<div>
+				<h2>Vehículos ya cobrados:</h2>
+				<table>
+					<tr>
+						<th>Patente</th>
+						<th>Entrada</th>
+						<th>Salida</th>
+						<th>Costo</th>
+					</tr>";
+		/*
 		foreach ($cobrados as $ticket) {
 			$fila = MiHTML::Celda($ticket[0] . "<br />$ " . $ticket[3]) . MiHTML::Celda($ticket[1] . "<br />" . $ticket[2]);
 			echo MiHTML::Fila($fila);
 		}
-		echo '</table></div>';							// Tabla de tickets
-
-		echo "</div>";
+		*/
+		echo '</table></div></div>';
 
 
 	}
 
 }
 
-/**
-* 
-*/
-class MiHTML
-{
-	
-	function __construct()
-	{
-		# code...
-	}
 
-	// Devuelve el parámetro envuelto en tags td
-	public static function Celda($contenido) {
-		return "<td>$contenido</td>";
-	}
-	// Devuelve el parámetro envuelto en tags tr
-	public static function Fila($contenido) {
-		return "<tr>$contenido</tr>";
-	}
-	// Devuelve el parámetro envuelto en tags h2
-	public static function Titulo_2($contenido) {
-		return "<label>$contenido</label>";
-	}
-
-}
 ?>

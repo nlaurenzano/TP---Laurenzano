@@ -36,9 +36,6 @@ class Vehiculo
 			$obj = Vehiculo::TraerPorPatente($patente);
 			$this->patente = $obj->patente;
 			$this->entrada = $obj->entrada;
-		} else {
-			$this->patente = $patente;
-			$this->entrada = date("Y-m-d H:i:s");
 		}
 	}
 
@@ -58,7 +55,7 @@ class Vehiculo
 		$consulta = $objetoAccesoDato->RetornarConsulta("SELECT patente, entrada FROM estacionados WHERE patente = :patente ");
 		$consulta->bindValue(':patente', $patente, PDO::PARAM_INT);
 		$consulta->execute();
-		$vehBuscado= $consulta->fetchObject('Vehiculo');
+		$vehBuscado = $consulta->fetchObject('Vehiculo');
 		return $vehBuscado;
 	}
 

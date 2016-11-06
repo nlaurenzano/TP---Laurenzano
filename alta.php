@@ -16,9 +16,11 @@
         <!--<link rel="stylesheet" type="text/css" href="estilo.css">-->
 </head>
 <body>
-	<a class="" href="index.html">Menú principal</a>
+<div class="container">
+	<a class="btn btn-info" href="index.html">Menu principal</a>
 <?php     
 	require_once("clases\Vehiculo.php");
+	require_once("clases\Estacionamiento.php");
 	require_once("clases\AccesoDatos.php");
 
 	if(isset($_POST['idparamodificar'])) {
@@ -26,12 +28,12 @@
 		//$unVehiculo = Vehiculo::TraerPorPatente($_POST['idparamodificar']);
 	}
 ?>
-	<div class="container">
+	<div class="">
 		<div class="">
-			<h1>Estacionamiento TP</h1>      
+			<h1>Estacionamiento TP</h1>
 		</div>
 		<div class="">
-			<h1>Datos del vehíulo</h1>
+			<h1>Datos del vehículo</h1>
 
 			<form id="FormIngreso" method="post">
 				<input type="text" name="patente" placeholder="Patente" value="<?php echo isset($unVehiculo) ?  $unVehiculo->GetPatente() : "" ; ?>" />
@@ -39,10 +41,10 @@
 				<input type="hidden" name="entradaModif" placeholder="Horario de entrada" value="<?php echo isset($unVehiculo) ?  $unVehiculo->GetEntrada() : "" ; ?>" />
 				<input type="hidden" name="patenteModif" value="<?php echo isset($unVehiculo) ? $unVehiculo->GetPatente() : "" ; ?>" />
 
-				<input type="submit" class="btn" name="guardar" />
-				</div>
+				<input type="submit" class="btn btn-success" name="guardar" />
 
 			</form>
+		</div>
 		
 <?php 
 
@@ -56,16 +58,16 @@ if(isset($_POST['guardar'])) {
 		$retorno = $unVehiculo->ModificarEstacionado();
 	} else {
 		// si es un alta
-		$unVehiculo = new Vehiculo();
-		$unVehiculo->SetPatente($_POST['patente']);
-		$unVehiculo->InsertarEstacionado();
+		if (Estacionamiento::Guardar($_POST['patente'])) {
+			// Mensaje 'Ingresad exitosamente'
+		}
 	}	
 } else {
 	echo "Primer ingreso";
 }
 
 ?>
-		</div>
 	</div>
+</div>
 </body>
 </html>
