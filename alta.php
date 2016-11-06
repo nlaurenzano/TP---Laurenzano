@@ -18,6 +18,7 @@
 <body>
 <div class="container">
 	<a class="btn btn-info" href="index.html">Menu principal</a>
+	<a class="btn btn-info" href="grilla.php">Listados</a>
 <?php     
 	require_once("clases\Vehiculo.php");
 	require_once("clases\Estacionamiento.php");
@@ -25,7 +26,7 @@
 
 	if(isset($_POST['idparamodificar'])) {
 		//viene de la grilla
-		//$unVehiculo = Vehiculo::TraerPorPatente($_POST['idparamodificar']);
+		$unVehiculo = Vehiculo::TraerPorPatente($_POST['idparamodificar']);
 	}
 ?>
 	<div class="">
@@ -41,31 +42,36 @@
 				<input type="hidden" name="entradaModif" placeholder="Horario de entrada" value="<?php echo isset($unVehiculo) ?  $unVehiculo->GetEntrada() : "" ; ?>" />
 				<input type="hidden" name="patenteModif" value="<?php echo isset($unVehiculo) ? $unVehiculo->GetPatente() : "" ; ?>" />
 
-				<input type="submit" class="btn btn-success" name="guardar" />
+				<input type="submit" class="btn btn-success" name="guardar" value="Ingresar" />
+				<input type="submit" class="btn btn-success" name="salir" value="Salir" />
 
 			</form>
 		</div>
-		
-<?php 
 
-if(isset($_POST['guardar'])) {
-	// si esto no se cumple ingreso por primera vez
-	if($_POST['patenteModif'] != "") {
-		$unVehiculo = Vehiculo::TraerPorPatente($_POST['patente']);
-		$unVehiculo->SetPatente($_POST['patente']);
-		$unVehiculo->SetEntrada($_POST['entrada']);
-		
-		$retorno = $unVehiculo->ModificarEstacionado();
-	} else {
-		// si es un alta
-		if (Estacionamiento::Guardar($_POST['patente'])) {
-			// Mensaje 'Ingresad exitosamente'
+<?php
+
+	if (isset($_POST['guardar'])) {
+		// si esto no se cumple ingreso por primera vez
+		if ($_POST['patenteModif'] != "") {
+			$unVehiculo = Vehiculo::TraerPorPatente($_POST['patente']);
+			$unVehiculo->SetPatente($_POST['patente']);
+			$unVehiculo->SetEntrada($_POST['entrada']);
+			
+			$retorno = $unVehiculo->ModificarEstacionado();
+		} else {
+			// si es un alta
+			if (Estacionamiento::Guardar($_POST['patente'])) {
+				// Mensaje 'Ingresado exitosamente'
+			}
 		}
-	}	
-} else {
-	echo "Primer ingreso";
-}
+	}
+	elseif (isset($_POST['salir'])) {
+		// si es un salida
+		if (Estacionamiento::Sacar(($_POST['patente']))) {
+			// Mensaje 'Sacado exitosamente'
+		}
 
+	}
 ?>
 	</div>
 </div>

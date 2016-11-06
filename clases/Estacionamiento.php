@@ -30,110 +30,35 @@ class Estacionamiento
 		return true;
 	}
 
-	public static function Leer() {
-		$autos = array();
-		$miarchivo = fopen("estacionados.txt", "r");	//http://www.w3schools.com/php/func_filesystem_fopen.asp
-
-		while (!(feof($miarchivo))) {
-			$renglon = rtrim(fgets($miarchivo));
-			$renglonArray = explode(" - ", $renglon);
-
-			if ($renglonArray[0] != "") {
-				$autos[] = $renglonArray;
-			}
-			//echo '<br />'.$renglonArray[0];
-		}
-		fclose($miarchivo);
-		return $autos;
-
-	}
-
-	public static function LeerTickets() {
-		$tickets = array();
-		$miarchivo = fopen("tickets.txt", "r");	//http://www.w3schools.com/php/func_filesystem_fopen.asp
-
-		while (!(feof($miarchivo))) {
-			$renglon = rtrim(fgets($miarchivo));
-			$renglonArray = explode(" - ", $renglon);
-
-			if ($renglonArray[0] != "") {
-				$tickets[] = $renglonArray;
-			}
-		}
-		fclose($miarchivo);
-		return $tickets;
-
-	}
-
 	public static function Sacar($patente) {
-		$estacionados = Estacionamiento::Leer();
-		$hallado = false;
+		
 		$patente = str_ireplace(" ","",$patente);
+		$veh = Vehiculo::TraerPorPatente($patente);
 
-		foreach ($estacionados as $key => $auto) {
-			
-			if (strcasecmp(str_ireplace(" ","",$auto[0]), $patente) == 0) {	// Comparación case insensitive
-				// Tenemos el auto estacionado
-				$hallado = true;
+		if ($veh) {
+			// Tenemos el auto estacionado
+			$importe = Estacionamiento::CalcularPrecio($veh);
+			echo strval($importe);
+			// Guardar en tabla de Tickets
+			$veh->InsertarCobrado();
 
-				Estacionamiento::CalcularPrecio($auto);
-				Estacionamiento::Eliminar($estacionados, $key);
-
-				break;
-			}
-		}
-
-		if (!$hallado) {
+			Vehiculo::Borrar($veh->GetPatente());
+		} else {
 			echo "La patente '$patente' no pertenece a ningún vehículo registrado en el estacionamiento.";
 		}
 	}
 
 	// $inicio = Fecha y hora de ingreso
-	public static function CalcularPrecio($auto) {
-		$inicio = $auto[1];
+	public static function CalcularPrecio($veh) {
+		$inicio = $veh->GetEntrada();
 		$ahora = date("Y-m-d H:i:s");		// Fecha y hora actuales
+		$veh->SetSalida($ahora);
 
 		$diferencia = strtotime($ahora) - strtotime($inicio);
-		$importe = $diferencia * 10;	// Se guarda en ticket.txt
+		$importe = $diferencia * 0.009;	// Multiplico por el precio por segundo
+		$veh->SetImporte($importe);
 
-		$miarchivo = fopen("tickets.txt", "a");
-		$renglon = "$auto[0] - $inicio - $ahora - $importe\n";
-		fwrite($miarchivo, $renglon);	//Crea el archivo y guarda la patente
-		fclose($miarchivo);
-
-		echo 'Costo = $'.$importe;
-
-	}
-
-	public static function Eliminar($estacionados,$key) {
-		// Elimina el elemento del array de autos estacionados
-		unset($estacionados[$key]);
-
-		// Reescribe el archivo de autos estacionados, sin el elemento que se acaba de eliminar
-		$miarchivo = fopen("estacionados.txt", "w");	//http://www.w3schools.com/php/func_filesystem_fopen.asp
-
-		foreach ($estacionados as $auto) {
-			//$renglon = "$patente - $fecha"."\n";
-			$renglon = "$auto[0] - $auto[1]"."\n";
-			
-			fwrite($miarchivo, $renglon);	//Crea el archivo y guarda la patente
-		}
-		fclose($miarchivo);
-	}
-
-	public static function BuscarEstacionado($patente) {
-		$estacionados = Estacionamiento::Leer();
-		$hallado = false;
-		$patente = str_ireplace(" ","",$patente);
-
-		foreach ($estacionados as $key => $auto) {
-			
-			if (strcasecmp(str_ireplace(" ","",$auto[0]), $patente) == 0) {	// Comparación case insensitive
-				// Tenemos el auto estacionado
-				$hallado = true;
-			}
-		}
-		return $hallado;
+		return 'Importe = $'.$importe;
 	}
 
 	public static function ValidarPatente($patente) {
@@ -170,7 +95,7 @@ class Estacionamiento
 	public static function ImprimirTablas() {
 
 		$estacionados = Vehiculo::TraerTodosLosEstacionados();
-		//$cobrados = Estacionamiento::LeerTickets(10);
+		$cobrados = Vehiculo::TraerTodosLosCobrados();
 
 		echo '<div style="padding:10px;">';
 		
@@ -187,11 +112,15 @@ class Estacionamiento
 						<td>".$veh->GetPatente()."</td>
 						<td>".$veh->GetEntrada()."</td>
 						<td>
+							<button class=\"btn btn-success\" name=\"Salir\" 
+								onclick=\"Sacar('".$veh->GetPatente()."')\">Salir</button>
+						</td>
+						<td>
 							<button class=\"btn btn-danger\" name=\"Borrar\" 
 								onclick=\"Borrar('".$veh->GetPatente()."')\">Borrar</button>
 						</td>
 						<td>
-							<button class=\"btn btn-warning\" name=\"Modificar\" 
+							<button class=\"btn btn-danger hidden\" name=\"Modificar\" 
 								onclick=\"Modificar('".$veh->GetPatente()."')\">Modificar</button>
 						</td>
 					</tr>";
@@ -207,14 +136,26 @@ class Estacionamiento
 						<th>Patente</th>
 						<th>Entrada</th>
 						<th>Salida</th>
-						<th>Costo</th>
+						<th>Importe</th>
 					</tr>";
-		/*
+		
 		foreach ($cobrados as $ticket) {
-			$fila = MiHTML::Celda($ticket[0] . "<br />$ " . $ticket[3]) . MiHTML::Celda($ticket[1] . "<br />" . $ticket[2]);
-			echo MiHTML::Fila($fila);
+			echo  "<tr>
+						<td>".$ticket->GetPatente()."</td>
+						<td>".$ticket->GetEntrada()."</td>
+						<td>".$ticket->GetSalida()."</td>
+						<td>".$ticket->GetImporte()."</td>
+						<td>
+							<button class=\"btn btn-danger hidden\" name=\"Borrar\" 
+								onclick=\"Borrar('".$ticket->GetPatente()."')\">Borrar</button>
+						</td>
+						<td>
+							<button class=\"btn btn-danger hidden\" name=\"Modificar\" 
+								onclick=\"Modificar('".$ticket->GetPatente()."')\">Modificar</button>
+						</td>
+					</tr>";
 		}
-		*/
+		
 		echo '</table></div></div>';
 
 

@@ -21,9 +21,13 @@
         <!--<link rel="stylesheet" type="text/css" href="estilo.css">-->
 
        <script type="text/javascript">
+		function Sacar(patente)
+		{
+			$('#idparasacar').val(patente);
+			document.frmSalir.submit();
+		}
 		function Borrar(patente)
 		{
-			alert(patente);
 			$('#idparaborrar').val(patente);
 			document.frmBorrar.submit();
 		}
@@ -36,23 +40,31 @@
         </script>
 </head>
 <body>
- <a class="btn btn-info" href="index.html">Menu principal</a>
+	<div class="container">
+		<a class="btn btn-info" href="index.html">Menu principal</a>
+		<a class="btn btn-info" href="alta.php">Ingreso y salida</a>
 <?php
+	if(isset($_POST['idparasacar']))
+	{
+		$resultado = Estacionamiento::Sacar($_POST['idparasacar']);
+	}
 	if(isset($_POST['idparaborrar']))
 	{
-		echo "Debo borrar";
 		$resultado = Vehiculo::Borrar($_POST['idparaborrar']);
 	}
 ?>	
-	<form name="frmBorrar" method="POST" >
-		<input type="hidden" name="idparaborrar" id="idparaborrar" />
-	</form>
-	
-	<form name="frmModificar" method="POST" action="alta.php" >
-		<input type="hidden" name="idparamodificar" id="idparamodificar" />
-	</form>
+		<form name="frmSalir" method="POST" >
+			<input type="hidden" name="idparasacar" id="idparasacar" />
+		</form>
+		
+		<form name="frmBorrar" method="POST" >
+			<input type="hidden" name="idparaborrar" id="idparaborrar" />
+		</form>
+		
+		<form name="frmModificar" method="POST" action="alta.php">
+			<input type="hidden" name="idparamodificar" id="idparamodificar" />
+		</form>
 
-	<div class="container">
 		<div class="">
 			<h1>Estacionamiento TP</h1>      
 		</div>
