@@ -112,18 +112,14 @@ class Estacionamiento
 						<td>".$veh->GetPatente()."</td>
 						<td>".$veh->GetEntrada()."</td>
 						<td>
-							<button class=\"btn btn-success\" name=\"Salir\" 
+							<button class=\"btn btn-success hidden\" name=\"Salir\" 
 								onclick=\"Sacar('".$veh->GetPatente()."')\">Salir</button>
-						</td>
-						<td>
-							<button class=\"btn btn-danger\" name=\"Borrar\" 
+							<button class=\"btn btn-danger hidden\" name=\"Borrar\" 
 								onclick=\"Borrar('".$veh->GetPatente()."')\">Borrar</button>
-						</td>
-						<td>
 							<button class=\"btn btn-danger hidden\" name=\"Modificar\" 
 								onclick=\"Modificar('".$veh->GetPatente()."')\">Modificar</button>
 						</td>
-					</tr>";
+						</tr>";
 		}
 
 		echo '</table></div>';						// Tabla de estacionados
@@ -144,19 +140,17 @@ class Estacionamiento
 						<td>".$ticket->GetPatente()."</td>
 						<td>".$ticket->GetEntrada()."</td>
 						<td>".$ticket->GetSalida()."</td>
-						<td>".$ticket->GetImporte()."</td>
+						<td class=\"moneda\">$ ".$ticket->GetImporte()."</td>
 						<td>
 							<button class=\"btn btn-danger hidden\" name=\"Borrar\" 
 								onclick=\"Borrar('".$ticket->GetPatente()."')\">Borrar</button>
-						</td>
-						<td>
 							<button class=\"btn btn-danger hidden\" name=\"Modificar\" 
 								onclick=\"Modificar('".$ticket->GetPatente()."')\">Modificar</button>
 						</td>
 					</tr>";
 		}
 		
-		echo '</table></div></div>';
+		echo '</table></table></div></div>';
 
 
 	}
