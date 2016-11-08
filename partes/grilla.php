@@ -38,7 +38,8 @@
 
 <?php 
 
-	Estacionamiento::ImprimirTablas();
+	//Estacionamiento::ImprimirTablas();
+	ImprimirTablas();
 	
 ?>
 </div>

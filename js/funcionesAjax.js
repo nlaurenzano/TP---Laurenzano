@@ -18,23 +18,19 @@ function Mostrar(queMostrar)
 	});
 }
 
-function MostarLogin()
-{
+function MostrarLogin() {
 	var funcionAjax=$.ajax({
 		url:"nexo.php",
 		type:"post",
-		data:{queHacer:"MostarLogin"}
+		data:{queHacer:"MostrarLogin"}
 	});
-	funcionAjax.done(function(retorno){
-		$("#principal").html(retorno);
-		$("#informe").html("Correcto Form login!!!");	
+	funcionAjax.done(function(retorno) {
+		$("#formLogin").html(retorno);
 	});
-	funcionAjax.fail(function(retorno){
-		$("#botonesABM").html(":(");
-		$("#informe").html(retorno.responseText);	
+	funcionAjax.fail(function(retorno) {
+		//$("#botonesABM").html(":(");
 	});
-	funcionAjax.always(function(retorno){
+	funcionAjax.always(function(retorno) {
 		//alert("siempre "+retorno.statusText);
-
 	});
 }

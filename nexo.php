@@ -10,12 +10,15 @@ switch ($queHago) {
 	case 'MostrarInicio':
 		include("partes/inicio.php");
 		break;
+	case 'MostrarBotones':
+		include("partes/botonesNav.php");
+		break;
 	case 'MostrarAlta':
 		include("partes/alta.php");
 		break;
 	case 'MostrarGrilla':
-		//include("partes/grilla.php");
-		ImprimirTablas();
+		include("partes/grilla.php");
+		//ImprimirTablas();
 		break;
 	case 'MostrarAdmin':
 		include("partes/admin.php");
@@ -52,8 +55,6 @@ function TraerEstacionadosWS($host) {
 		die();
 	}
 
-	//INVOCO AL METODO DE MI WS		
-	//$vehiculos = $client->call('TraerTodosLosEstacionados', array());
 	$vehiculos = $client->call('TraerTodosLosEstacionados');
 
 	if ($client->fault) {
@@ -99,9 +100,9 @@ function TraerCobradosWS($host) {
 	}
 }
 
-
 function ImprimirTablas() {
 	$host = 'http://localhost/TP-Laurenzano/SERVIDOR/ws.php';
+	//$host = 'http://www.tplaurenzano.esy.es/SERVIDOR/ws.php';
 	$estacionados = TraerEstacionadosWS($host);
 	$cobrados = TraerCobradosWS($host);
 

@@ -11,7 +11,11 @@
 		<div class="col-md-10">
 	        <h3>PLAYAS DE ESTACIONAMIENTO</h3>
 	        <br />
-	        <h3>UTN-FRA : PROGRAMACIÓN 3</h3>
+
+	        <div class="text-center" id="formLogin">
+			    <script type="text/javascript">MostrarLogin();</script>
+			</div>
+
 	    </div>
 	        
 	    <div class="col-md-1">
