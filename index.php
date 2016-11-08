@@ -6,13 +6,17 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
         <!-- Latest compiled and minified CSS -->
-        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+        <!--<link rel="stylesheet" href="resources/bootstrap.min.css">-->
+           <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        
 
         <!-- jQuery library -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <!--<script src="resources/jquery.min.js"></script>-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
         <!-- Latest compiled JavaScript -->
-        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+        <!--<script src="resources/bootstrap.min.js"></script>-->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         
         <link rel="stylesheet" type="text/css" href="css/estilo.css">
 
@@ -54,6 +58,24 @@
 	<div class="container text-center" id="principal">
 	    <script type="text/javascript">Mostrar('MostrarInicio');</script>
 	</div>
-	    
+
+<!-- Footer -->
+<footer class="text-center">
+  <a class="up-arrow" href="#top" data-toggle="tooltip" title="ARRIBA">
+    <span class="glyphicon glyphicon-chevron-up"></span>
+  </a>
+  <p style="float:left;" class="text-left">
+  	UTN-FRA : Pogramación 3<br />
+  	Nicolás Laurenzano - Noviembre 2016
+  </p>
+  <p style="float:right;" class="text-right">Tema de Bootstrap de<br /><a href="http://www.w3schools.com" data-toggle="tooltip" title="Visite w3schools">www.w3schools.com</a></p> 
+</footer>
+
+<script>
+	$(document).ready(function(){
+	  // Initialize Tooltip
+	  $('[data-toggle="tooltip"]').tooltip(); 
+	})
+</script>
 </body>
 </html>

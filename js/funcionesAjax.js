@@ -1,7 +1,6 @@
 
 function Mostrar(queMostrar)
 {
-	//alert(queMostrar);
 	var funcionAjax=$.ajax({
 		url:"nexo.php",
 		type:"post",
@@ -9,7 +8,6 @@ function Mostrar(queMostrar)
 	});
 	funcionAjax.done(function(retorno){
 		$("#principal").html(retorno);
-		//$("#informe").html("Correcto!!!");
 	});
 	funcionAjax.fail(function(retorno){
 		$("#principal").html(retorno.responseText);	
@@ -22,7 +20,6 @@ function Mostrar(queMostrar)
 
 function MostarLogin()
 {
-		//alert(queMostrar);
 	var funcionAjax=$.ajax({
 		url:"nexo.php",
 		type:"post",

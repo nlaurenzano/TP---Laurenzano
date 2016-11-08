@@ -5,23 +5,24 @@
 ?>
 
 <script type="text/javascript">
-function Sacar(patente)
-{
-	$('#idparasacar').val(patente);
-	document.frmSalir.submit();
-}
-function Borrar(patente)
-{
-	$('#idparaborrar').val(patente);
-	document.frmBorrar.submit();
-}
-function Modificar(patente)
-{
-	//alert(patente);
-	$('#idparamodificar').val(patente);
-	document.frmModificar.submit();
-}
+	function Sacar(patente)
+	{
+		$('#idparasacar').val(patente);
+		document.frmSalir.submit();
+	}
+	function Borrar(patente)
+	{
+		$('#idparaborrar').val(patente);
+		document.frmBorrar.submit();
+	}
+	function Modificar(patente)
+	{
+		//alert(patente);
+		$('#idparamodificar').val(patente);
+		document.frmModificar.submit();
+	}
 </script>
+
 <?php
 	if(isset($_POST['idparasacar']))
 	{
@@ -32,31 +33,24 @@ function Modificar(patente)
 		$resultado = Vehiculo::Borrar($_POST['idparaborrar']);
 	}
 ?>	
-
-	<form name="frmSalir" method="POST" >
-		<input type="hidden" name="idparasacar" id="idparasacar" />
-	</form>
-	
-	<form name="frmBorrar" method="POST" >
-		<input type="hidden" name="idparaborrar" id="idparaborrar" />
-	</form>
-	
-	<form name="frmModificar" method="POST" action="alta.php">
-		<input type="hidden" name="idparamodificar" id="idparamodificar" />
-	</form>
-
-	<div class="">
-		<h1>Estacionamiento TP</h1>      
-	</div>
-	<div class="">
-		<h3>LISTADOS</h3>
+<div class="">
+	<h3>LISTADOS</h3>
 
 <?php 
 
 	Estacionamiento::ImprimirTablas();
 	
 ?>
-		</div>
-	</div>
-</body>
-</html>
+</div>
+
+<form name="frmSalir" method="POST" >
+	<input type="hidden" name="idparasacar" id="idparasacar" />
+</form>
+
+<form name="frmBorrar" method="POST" >
+	<input type="hidden" name="idparaborrar" id="idparaborrar" />
+</form>
+
+<form name="frmModificar" method="POST" action="alta.php">
+	<input type="hidden" name="idparamodificar" id="idparamodificar" />
+</form>

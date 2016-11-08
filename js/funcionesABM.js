@@ -45,6 +45,7 @@ function EditarCD(idParametro)
 function GuardarVehiculo()
 {
 		var patente=$("#patente").val();
+		$("#patente").val('');
 
 		var funcionAjax=$.ajax({
 		url:"nexo.php",
@@ -55,12 +56,32 @@ function GuardarVehiculo()
 		}
 	});
 	funcionAjax.done(function(retorno){
-		//Mostrar("MostrarGrilla");
-		//$("#informe").html("Vehículo ingresado exitosamente.");	
-		$("#informe").html(retorno);	
+		$("#mensajesABM").html(retorno);	
 		
 	});
 	funcionAjax.fail(function(retorno){	
-		$("#informe").html("Error al ingresar el vehículo: " + retorno.responseText);	
+		$("#mensajesABM").html("Error al ingresar el vehículo: " + retorno.responseText);	
+	});	
+}
+
+function SacarVehiculo()
+{
+		var patente=$("#patente").val();
+		$("#patente").val('');
+
+		var funcionAjax=$.ajax({
+		url:"nexo.php",
+		type:"post",
+		data:{
+			queHacer:"SacarVehiculo",
+			patente:patente	
+		}
+	});
+	funcionAjax.done(function(retorno){
+		$("#mensajesABM").html(retorno);	
+		
+	});
+	funcionAjax.fail(function(retorno){	
+		$("#mensajesABM").html("Error al sacar el vehículo: " + retorno.responseText);	
 	});	
 }

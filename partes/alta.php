@@ -28,6 +28,7 @@
 			<div class="col-md-3">
 			</div>
 		</div>
+
 		<div class="row">
 			<div class="col-md-3">
 			</div>
@@ -40,6 +41,20 @@
 			<div class="col-md-3">
 				<input type="button" class="btn btn-lg btn-block btn-success" name="salir" value="Salir" 
 					onclick="SacarVehiculo()" />
+			</div>
+
+			<div class="col-md-3">
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-3">
+			</div>
+		
+			<div class="col-md-6">
+				<div class="" id="mensajesABM">
+
+				</div>
 			</div>
 
 			<div class="col-md-3">

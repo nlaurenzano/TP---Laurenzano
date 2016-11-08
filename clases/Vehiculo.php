@@ -92,7 +92,8 @@ class Vehiculo
 		$consulta=$objetoAccesoDato->RetornarConsulta("SELECT patente,entrada FROM estacionados");
 		$consulta->execute();
 
-		return $consulta->fetchall(PDO::FETCH_CLASS,"Vehiculo");
+		//return $consulta->fetchall(PDO::FETCH_CLASS,"Vehiculo");
+		return $consulta->fetchall();
 	}
 
 	public static function TraerTodosLosCobrados()
@@ -101,7 +102,8 @@ class Vehiculo
 		$consulta=$objetoAccesoDato->RetornarConsulta("SELECT patente,entrada,salida,importe FROM tickets");
 		$consulta->execute();
 
-		return $consulta->fetchall(PDO::FETCH_CLASS,"Vehiculo");
+		//return $consulta->fetchall(PDO::FETCH_CLASS,"Vehiculo");
+		return $consulta->fetchall();
 	}
 //--------------------------------------------------------------------------------//
 
