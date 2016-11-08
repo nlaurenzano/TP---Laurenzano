@@ -65,7 +65,6 @@ if(!isset($_SESSION['registrado'])){  ?>
     
       <div class="col-md-6">
         <div class="" id="mensajesLogin">
-
         </div>
       </div>
 

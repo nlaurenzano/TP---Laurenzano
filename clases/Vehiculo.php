@@ -71,7 +71,7 @@ class Vehiculo
 	{
 		$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
 		$consulta = $objetoAccesoDato->RetornarConsulta("SELECT patente, entrada FROM estacionados WHERE patente = :patente ");
-		$consulta->bindValue(':patente', $patente, PDO::PARAM_INT);
+		$consulta->bindValue(':patente', $patente, PDO::PARAM_STR);
 		$consulta->execute();
 		$vehBuscado = $consulta->fetchObject('Vehiculo');
 		return $vehBuscado;
@@ -81,7 +81,7 @@ class Vehiculo
 	{
 		$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
 		$consulta =$objetoAccesoDato->RetornarConsulta("DELETE FROM estacionados WHERE patente = :patente");	
-		$consulta->bindValue(':patente', $patente, PDO::PARAM_INT);		
+		$consulta->bindValue(':patente', $patente, PDO::PARAM_STR);		
 		$consulta->execute();
 		return $consulta->rowCount();
 	}

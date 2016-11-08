@@ -28,7 +28,7 @@ function MostrarLogin() {
 		$("#formLogin").html(retorno);
 	});
 	funcionAjax.fail(function(retorno) {
-		//$("#botonesABM").html(":(");
+		$("#mensajesLogin").html("Error en login.");
 	});
 	funcionAjax.always(function(retorno) {
 		//alert("siempre "+retorno.statusText);

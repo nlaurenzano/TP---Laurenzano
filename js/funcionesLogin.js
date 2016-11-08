@@ -1,8 +1,9 @@
 function validarLogin()
 {
-		var varUsuario=$("#correo").val();
-		var varClave=$("#clave").val();
-		var recordar=$("#recordarme").is(':checked');
+	$("#mensajesLogin").val('');
+	var varUsuario=$("#correo").val();
+	var varClave=$("#clave").val();
+	var recordar=$("#recordarme").is(':checked');
 		
 //$("#mensajesLogin").html("<img src='imagenes/ajax-loader.gif' style='width: 30px;'/>");
 	
@@ -17,15 +18,14 @@ function validarLogin()
 		}
 	});
 
-
 	funcionAjax.done(function(retorno) {
-		alert(retorno);
-			if(retorno!="No-esta") {
-				MostrarBotones();
-				MostrarLogin();
-			} else {
-				$("#mensajesLogin").html("Usuario o clave incorrectos.");
-			}
+		if (retorno == "No-esta" || retorno == "errorClave") {
+			$("#mensajesLogin").html("Usuario o clave incorrectos.");
+			$("#botonesNav").html('');
+		} else {
+			MostrarBotones();
+			MostrarLogin();
+		}
 	});
 	funcionAjax.fail(function(retorno) {
 		$("#botonesNav").html('');
@@ -49,11 +49,12 @@ function testLogin(tipoUsuario) {
 }
 
 function deslogear() {
-	var funcionAjax=$.ajax({
+	var funcionAjax = $.ajax({
 		url:"php/deslogearUsuario.php",
 		type:"post"
 	});
 	funcionAjax.done(function(retorno) {
+		$("#botonesNav").html('');
 		Mostrar('MostrarInicio');
 	});
 }

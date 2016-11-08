@@ -7,7 +7,15 @@ if(isset($_SESSION['registrado'])) {
 	<li><a onclick="Mostrar('MostrarInicio');">INICIO</a></li>
 	<li><a onclick="Mostrar('MostrarAlta')">INGRESO / SALIDA</a></li>
 	<li><a onclick="Mostrar('MostrarGrilla')">LISTADOS</a></li>
+	
+<?php 
+if($_SESSION['rol']=='admin') {
+?>
 	<li><a onclick="Mostrar('MostrarAdmin')">ADMINISTRACIÓN</a></li>
+<?php 
+}
+?>	
+
 	<li class="dropdown">
 		<a class="dropdown-toggle" data-toggle="dropdown" >
 			<?php echo $_SESSION['registrado']?>

@@ -35,10 +35,12 @@ switch ($queHago) {
 	case 'BorrarVehiculo':
 		Vehiculo::Borrar($_POST['patente']);
 		break;
+	/*
 	case 'TraerVehiculo':
 		$veh = Vehiculo::TraerPorPatente($_POST['id']);		
 		echo json_encode($veh);
 		break;
+	*/
 
 	default:
 		# code...
@@ -101,7 +103,7 @@ function TraerCobradosWS($host) {
 }
 
 function ImprimirTablas() {
-	$host = 'http://localhost/TP-Laurenzano/SERVIDOR/ws.php';
+	$host = 'http://localhost:80/TP-Laurenzano/SERVIDOR/ws.php';
 	//$host = 'http://www.tplaurenzano.esy.es/SERVIDOR/ws.php';
 	$estacionados = TraerEstacionadosWS($host);
 	$cobrados = TraerCobradosWS($host);
@@ -164,7 +166,7 @@ function ImprimirTablas() {
 					echo "	</tr>";
 	}
 	
-	echo '</table></table></div></div>';
+	echo '</table></div></div>';
 }
 
 ?>
